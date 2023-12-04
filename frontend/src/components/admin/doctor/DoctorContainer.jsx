@@ -17,7 +17,6 @@ const DoctorContainer = () => {
   const [disable, setDisable] = useState(false);
 
   const [doctors, setDoctors] = useState(null);
-  const [rooms, setRooms] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [newDoctorData, setNewDoctorData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -49,16 +48,6 @@ const DoctorContainer = () => {
       }
     }).catch(error => {
       console.log("error");
-    });
-  };
-
-  const fetchRooms = () => {
-    axios.get("/api/rooms", userAuthenticationConfig()).then(response => {
-      if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
-        setRooms(response.data["hydra:member"]);
-      }
-    }).catch(error => {
-      console.log("error fetching rooms");
     });
   };
 
@@ -112,7 +101,7 @@ const DoctorContainer = () => {
   const [paginationInfo, setPaginationInfo] = useState({
     totalItems: null,
     totalPageCount: null,
-    itemsPerPage: 4
+    itemsPerPage: 5
   });
 
   useEffect(() => {
@@ -148,8 +137,6 @@ const DoctorContainer = () => {
       </div>
       <DoctorList
         doctors={doctors}
-        rooms={rooms}
-        fetchRooms={fetchRooms}
         setEditedData={setEditedData}
         editedData={editedData}
         sendPatchRequest={sendPatchRequest}
