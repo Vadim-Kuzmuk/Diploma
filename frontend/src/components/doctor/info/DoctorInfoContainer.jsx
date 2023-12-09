@@ -7,6 +7,7 @@ import DoctorPersonalInfoContainer from "./DoctorPersonalInfoContainer";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { checkFilterItem, fetchFilterData } from "../../../utils/fetchFilterData";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
+import WorkContainer from "../work/WorkContainer";
 
 const DoctorInfoContainer = ({ setNotification }) => {
 
@@ -14,17 +15,17 @@ const DoctorInfoContainer = ({ setNotification }) => {
     style={{
       zIndex: "100",
       display: "flex",
-      flexDirection: "row"
+      flexDirection: "column"
     }}
   >
-    {/* add here form */}
+    <WorkContainer />
     <div
       style={{
         position: "absolute",
         right: 0
       }}
     >
-      <DoctorPersonalInfoContainer setNotification={setNotification}/>
+      <DoctorPersonalInfoContainer setNotification={setNotification} />
     </div>
   </div>;
 };

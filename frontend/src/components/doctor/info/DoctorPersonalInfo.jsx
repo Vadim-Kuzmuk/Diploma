@@ -25,9 +25,6 @@ const DoctorPersonalInfo = ({
       <Typography variant="h4" sx={{ margin: "5px 0 0 0" }}>
         {doctor.firstName} {doctor.lastName}
       </Typography>
-      <Typography variant="h5" sx={{ margin: "5px 0 0 0" }}>
-        {doctor.doctorInfo.speciality.title}
-      </Typography>
       <Typography variant="p" sx={{ margin: "5px 0" }}>
         <b>Email:</b> {doctor.email}
       </Typography>
