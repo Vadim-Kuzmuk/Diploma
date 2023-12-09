@@ -138,7 +138,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         "get:item:doctor-info",
         "get:collection:doctor-info",
         "get:item:speciality",
-        "get:collection:client-info"
+        "get:collection:client-info",
+        "post:collection:work",
+        "get:item:work",
+        "get:collection:work"
     ])]
     private ?Uuid $id = null;
 
@@ -384,6 +387,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     private Collection $doctorVisits;
 
     /**
+     * @var Collection<Work>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Work::class)]
+    private Collection $doctorWork;
+
+    /**
      * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: HistoryAccess::class)]
@@ -452,6 +461,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
 
         $this->clientVisits = new ArrayCollection();
         $this->doctorVisits = new ArrayCollection();
+        $this->doctorWork = new ArrayCollection();
 
         $this->ownerHistoryAccesses = new ArrayCollection();
         $this->allowedHistoryAccesses = new ArrayCollection();
@@ -832,6 +842,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     /**
      * @return Collection
      */
+    public function getDoctorWork(): Collection
+    {
+        return $this->doctorWork;
+    }
+
+    /**
+     * @param Collection $doctorWork
+     * @return $this
+     */
+    public function setDoctorWork(Collection $doctorWork): self
+    {
+
+        $this->doctorWork = $doctorWork;
+
+        return $this;
+    }
+
+    /**
+     * @return DoctorInfo|null
+     */
+    public function getDoctorInfo(): ?DoctorInfo
+    {
+        return $this->doctorInfo;
+    }
+
+    /**
+     * @param DoctorInfo $doctorInfo
+     * @return $this
+     */
+    public function setDoctorInfo(DoctorInfo $doctorInfo): self
+    {
+        if ($doctorInfo->getUser() !== $this) {
+            $doctorInfo->setUser($this);
+        }
+
+        $this->doctorInfo = $doctorInfo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
     public function getOwnerHistoryAccesses(): Collection
     {
         return $this->ownerHistoryAccesses;
@@ -924,29 +977,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         }
 
         $this->clientInfo = $clientInfo;
-
-        return $this;
-    }
-
-    /**
-     * @return DoctorInfo|null
-     */
-    public function getDoctorInfo(): ?DoctorInfo
-    {
-        return $this->doctorInfo;
-    }
-
-    /**
-     * @param DoctorInfo $doctorInfo
-     * @return $this
-     */
-    public function setDoctorInfo(DoctorInfo $doctorInfo): self
-    {
-        if ($doctorInfo->getUser() !== $this) {
-            $doctorInfo->setUser($this);
-        }
-
-        $this->doctorInfo = $doctorInfo;
 
         return $this;
     }
@@ -1054,7 +1084,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
             "birthday"     => $this->getBirthday(),
             "address"      => $this->getAddress(),
             "registration" => $this->getRegistration(),
-            "passport"     => $this->getPassport()
+            "passport"     => $this->getPassport(),
+            "doctorWork"   => $this->getDoctorWork()
         ];
     }
 

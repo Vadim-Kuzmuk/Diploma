@@ -47,25 +47,7 @@ const DoctorCabinetContainer = ()=>{
                 onClick={() => changePage("info")}
                 fullWidth
               >
-                Особиста інформація
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant={currentPage === "plannedVisits" ? "contained" : "outlined"}
-                onClick={() => changePage("plannedVisits")}
-                fullWidth
-              >
-                Заплановані прийоми
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant={currentPage === "finishedVisits" ? "contained" : "outlined"}
-                onClick={() => changePage("finishedVisits")}
-                fullWidth
-              >
-                Завершенні прийоми
+                Звітність
               </Button>
             </Grid>
           </Grid>
@@ -73,8 +55,6 @@ const DoctorCabinetContainer = ()=>{
 
         <div style={{ padding: "16px" }}>
           {currentPage === "info" && <DoctorInfoContainer setNotification={setNotification} />}
-          {currentPage === "plannedVisits" && <PlannedVisitsContainer />}
-          {currentPage === "finishedVisits" && <FinishedVisitsContainer />}
         </div>
       </div>
     </div>
