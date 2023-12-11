@@ -82,8 +82,11 @@ const WorkItem = ({
 
   return <>
     <Grid container style={containerStyle} spacing={2}>
-      <Grid item xs={3}>
-        <Typography>{work.id}</Typography>
+      <Grid item xs={1}>
+        <Typography>{work.user.lastName}</Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <Typography>{work.user.firstName}</Typography>
       </Grid>
       {editing ? (
         <>
@@ -164,12 +167,12 @@ const WorkItem = ({
               <DeleteOutlineOutlinedIcon />
             </Button>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={1}>
             <Typography />
           </Grid>
         </>
       ) : (
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Button
             onClick={handleEditClick}
             variant="outlined"

@@ -28,14 +28,19 @@ const WorkList = ({
 
   return <>
     <Grid container style={containerStyle} spacing={2}>
-      <Grid item xs={3}>
+      <Grid item xs={1}>
         <Typography variant="body1" style={labelStyle}>
-          ID
+          Прізвище
+        </Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <Typography variant="body1" style={labelStyle}>
+          Ім'я
         </Typography>
       </Grid>
       <Grid item xs={2}>
         <Typography variant="body1" style={labelStyle}>
-          Назва
+          Назва проекту
         </Typography>
       </Grid>
       <Grid item xs={1}>
@@ -46,6 +51,11 @@ const WorkList = ({
       <Grid item xs={1}>
         <Typography variant="body1" style={labelStyle}>
           Секунди
+        </Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <Typography variant="body1" style={labelStyle}>
+          Дата запису
         </Typography>
       </Grid>
       <Grid item xs={5}>

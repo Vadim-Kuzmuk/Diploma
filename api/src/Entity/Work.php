@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WorkRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use DateTimeImmutable;
@@ -51,6 +53,7 @@ use Symfony\Component\Validator\Constraints\PositiveOrZero;
         ]
     ]
 )]
+#[ApiFilter(OrderFilter::class, properties: ['created' => 'DESC'])]
 class Work implements JsonSerializable
 {
 
