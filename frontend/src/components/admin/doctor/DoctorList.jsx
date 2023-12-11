@@ -31,7 +31,7 @@ const DoctorList = ({
       <Grid container style={containerStyle} spacing={2}>
         <Grid item xs={3}>
           <Typography variant="body1" style={labelStyle}>
-            ID Доктору
+            ID Працівника
           </Typography>
         </Grid>
         <Grid item xs={1}>

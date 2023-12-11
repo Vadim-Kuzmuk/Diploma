@@ -139,9 +139,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         "get:collection:doctor-info",
         "get:item:speciality",
         "get:collection:client-info",
-        "post:collection:work",
         "get:item:work",
-        "get:collection:work"
+        "get:collection:work",
+        "post:collection:work"
     ])]
     private ?Uuid $id = null;
 
@@ -183,8 +183,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     #[Groups([
         "post:collection:user",
         "put:item:user",
-        "patch:item:user",
-
+        "patch:item:user"
     ])]
     private ?string $plainPassword = null;
 
@@ -234,7 +233,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         "get:item:doctor-info",
         "get:item:speciality",
         "patch:item:doctor-info",
-        "get:collection:client-info"
+        "get:collection:client-info",
+        "get:item:work",
+        "get:collection:work"
     ])]
     #[ORM\Column(length: 45)]
     private ?string $firstName = null;
@@ -256,7 +257,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         "get:item:doctor-info",
         "get:item:speciality",
         "patch:item:doctor-info",
-        "get:collection:client-info"
+        "get:collection:client-info",
+        "get:item:work",
+        "get:collection:work"
     ])]
     #[ORM\Column(length: 45)]
     private ?string $lastName = null;

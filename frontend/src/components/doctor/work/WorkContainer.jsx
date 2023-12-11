@@ -47,6 +47,8 @@ const WorkContainer = () => {
   const fetchWorks = () => {
     let filterUrl = fetchFilterData(filterData);
 
+    filterUrl += "&order[created]=desc";
+
     navigate(filterUrl);
 
     axios.get("/api/works" + filterUrl + "&itemsPerPage=" + paginationInfo.itemsPerPage, userAuthenticationConfig()).then(response => {
@@ -103,7 +105,7 @@ const WorkContainer = () => {
   const [paginationInfo, setPaginationInfo] = useState({
     totalItems: null,
     totalPageCount: null,
-    itemsPerPage: 10
+    itemsPerPage: 7
   });
 
   useEffect(() => {

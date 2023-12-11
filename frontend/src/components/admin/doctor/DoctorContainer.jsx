@@ -83,7 +83,7 @@ const DoctorContainer = () => {
         setNotification({
           visible: true,
           type: "error",
-          message: "Помилка при видаленні лікаря!"
+          message: "Помилка при видаленні працівника!"
         });
       }
     });
@@ -116,7 +116,7 @@ const DoctorContainer = () => {
     <>
       <Helmet>
         <title>
-          Лікарі
+          Працівники
         </title>
       </Helmet>
       <Notification
@@ -125,14 +125,14 @@ const DoctorContainer = () => {
       />
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
         <Typography variant="h4" component="h1" mb={1}>
-          Лікарі
+          Працівники
         </Typography>
         <Button
           variant="contained"
           to="/admin-panel/new-doctor"
           component={NavLink}
         >
-          Додати лікаря
+          Додати працівника
         </Button>
       </div>
       <DoctorList
