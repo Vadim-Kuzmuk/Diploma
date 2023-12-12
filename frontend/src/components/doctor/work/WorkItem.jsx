@@ -14,8 +14,8 @@ const containerStyle = {
   height: "88px"
 };
 
-const DepartmentItem = ({
-  department,
+const WorkItem = ({
+  work,
   editedData,
   setEditedData,
   sendPatchRequest,
@@ -30,8 +30,10 @@ const DepartmentItem = ({
 
   const updatedData = {
     ...editedData,
-    title: department.title,
-    phone: department.phone
+    title: work.title,
+    hours: work.hours,
+    seconds: work.seconds,
+    created: work.created
   };
 
   const handleEditClick = () => {
@@ -48,14 +50,14 @@ const DepartmentItem = ({
       setNotification({ ...notification, visible: true, type: "error", message: validationError });
       return;
     }
-    sendPatchRequest(department.id, editedData);
+    sendPatchRequest(work.id, editedData);
     setEditing(false);
     setDisable(false);
 
   };
 
   const handleDeleteClick = () => {
-    sendDeleteRequest(department.id);
+    sendDeleteRequest(work.id);
     setEditing(false);
     setDisable(false);
   };
@@ -68,22 +70,23 @@ const DepartmentItem = ({
   const validateData = (data) => {
     switch (false) {
       case isNameValid(data.title):
-        return "Назва відділення повинна містити принаймні 5 символів!";
-      case /^\+38\(0(?!0{2})[0-9]{2}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}$/.test(data.phone):
-        return "Некоректний номер телефону!";
+        return "Назва проекту повинна містити принаймні 3 символів!";
       default:
         return null;
     }
   };
 
   const isNameValid = (name) => {
-    return name.trim().length >= 5;
+    return name.trim().length >= 3;
   };
 
   return <>
     <Grid container style={containerStyle} spacing={2}>
-      <Grid item xs={3}>
-        <Typography>{department.id}</Typography>
+      <Grid item xs={1}>
+        <Typography>{work.user.lastName}</Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <Typography>{work.user.firstName}</Typography>
       </Grid>
       {editing ? (
         <>
@@ -96,30 +99,54 @@ const DepartmentItem = ({
               }
             />
           </Grid>
-          <Grid item xs={2}>
-            <FormControl variant="outlined" required>
-              <InputMask
-                mask="+38(099)-999-99-99"
-                maskChar="_"
-                id="phone"
-                name="phone"
-                value={editedData.phone}
-                onChange={(e) =>
-                  setEditedData({ ...editedData, phone: e.target.value })
+          <Grid item xs={1}>
+            <TextField
+              type="text"
+              value={editedData.hours}
+              onChange={(e) => {
+                const numericWithCommaRegex = /^\d*(\.\d{0,2})?$/;
+                if (numericWithCommaRegex.test(e.target.value)) {
+                  setEditedData({ ...editedData, hours: e.target.value });
                 }
-              >
-                {() => <TextField variant="outlined" label="Телефон" />}
-              </InputMask>
-            </FormControl>
+              }}
+            />
+          </Grid>
+          <Grid item xs={1}>
+            <TextField
+              type="text"
+              value={editedData.seconds}
+              onChange={(e) => {
+                const numericRegex = /^\d+$/;
+                if (numericRegex.test(e.target.value)) {
+                  const secondsValue = e.target.value === "" ? "" : parseInt(e.target.value, 10);
+                  setEditedData({ ...editedData, seconds: secondsValue });
+                }
+              }}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <TextField
+              type="text"
+              value={editedData.created}
+              onChange={(e) =>
+                setEditedData({ ...editedData, created: e.target.value })
+              }
+            />
           </Grid>
         </>
       ) : (
         <>
           <Grid item xs={2}>
-            <Typography>{department.title}</Typography>
+            <Typography>{work.title}</Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Typography>{work.hours}</Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Typography>{work.seconds}</Typography>
           </Grid>
           <Grid item xs={2}>
-            <Typography>{department.phone}</Typography>
+            <Typography>{work.created}</Typography>
           </Grid>
         </>
       )}
@@ -140,12 +167,12 @@ const DepartmentItem = ({
               <DeleteOutlineOutlinedIcon />
             </Button>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={1}>
             <Typography />
           </Grid>
         </>
       ) : (
-        <Grid item xs={2}>
+        <Grid item xs={4}>
           <Button
             onClick={handleEditClick}
             variant="outlined"
@@ -155,11 +182,8 @@ const DepartmentItem = ({
           </Button>
         </Grid>
       )}
-      <Grid item xs={3}>
-        <Typography />
-      </Grid>
     </Grid>
   </>;
 };
 
-export default DepartmentItem;
+export default WorkItem;

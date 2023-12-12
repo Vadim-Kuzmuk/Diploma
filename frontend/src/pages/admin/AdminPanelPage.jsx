@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import SpecialityContainer from "../../components/admin/speciality/SpecialityContainer";
-import DepartmentContainer from "../../components/admin/department/DepartmentContainer";
-import RoomContainer from "../../components/admin/room/RoomContainer";
 import DoctorContainer from "../../components/admin/doctor/DoctorContainer";
-import ClientContainer from "../../components/admin/client/ClientContainer";
+import DoctorInfoContainer from "../../components/doctor/info/DoctorInfoContainer";
+import Visualization1 from "../../components/admin/visualization/Visualization1";
+import Visualization2 from "../../components/admin/visualization/Visualization2";
+import Visualization3 from "../../components/admin/visualization/Visualization3";
+import Visualization4 from "../../components/admin/visualization/Visualization4";
+import Visualization5 from "../../components/admin/visualization/Visualization5";
+import Visualization6 from "../../components/admin/visualization/Visualization6";
 
 const AdminPanelPage = () => {
   const [currentPage, setCurrentPage] = useState(
@@ -27,64 +30,95 @@ const AdminPanelPage = () => {
         <div
           style={{
             backgroundColor: "#f0f0f0",
-            padding: "16px"
+            padding: "16px",
+            width: "150px"
           }}
         >
           <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <Button
-                variant={currentPage === "department" ? "contained" : "outlined"}
-                onClick={() => changePage("department")}
-                fullWidth
-              >
-                Відділи
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant={currentPage === "speciality" ? "contained" : "outlined"}
-                onClick={() => changePage("speciality")}
-                fullWidth
-              >
-                Спеціальності
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant={currentPage === "room" ? "contained" : "outlined"}
-                onClick={() => changePage("room")}
-                fullWidth
-              >
-                Кабінети
-              </Button>
-            </Grid>
             <Grid item>
               <Button
                 variant={currentPage === "doctor" ? "contained" : "outlined"}
                 onClick={() => changePage("doctor")}
                 fullWidth
               >
-                Лікарі
+                Працівники
               </Button>
             </Grid>
             <Grid item>
               <Button
-                variant={currentPage === "client" ? "contained" : "outlined"}
-                onClick={() => changePage("client")}
+                variant={currentPage === "info" ? "contained" : "outlined"}
+                onClick={() => changePage("info")}
                 fullWidth
               >
-                Клієнти
+                Звітність
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant={currentPage === "visualization2" ? "contained" : "outlined"}
+                onClick={() => changePage("visualization2")}
+                fullWidth
+              >
+                Відпрацьвано годин
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant={currentPage === "visualization3" ? "contained" : "outlined"}
+                onClick={() => changePage("visualization3")}
+                fullWidth
+              >
+                Створено секунд
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant={currentPage === "visualization1" ? "contained" : "outlined"}
+                onClick={() => changePage("visualization1")}
+                fullWidth
+              >
+                Порівняння
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant={currentPage === "visualization4" ? "contained" : "outlined"}
+                onClick={() => changePage("visualization4")}
+                fullWidth
+              >
+                Ефективність
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant={currentPage === "visualization5" ? "contained" : "outlined"}
+                onClick={() => changePage("visualization5")}
+                fullWidth
+              >
+                Проекти
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant={currentPage === "visualization6" ? "contained" : "outlined"}
+                onClick={() => changePage("visualization6")}
+                fullWidth
+              >
+                Прогнозування
               </Button>
             </Grid>
           </Grid>
         </div>
 
         <div style={{ padding: "16px" }}>
-          {currentPage === "department" && <DepartmentContainer />}
-          {currentPage === "speciality" && <SpecialityContainer />}
-          {currentPage === "room" && <RoomContainer />}
           {currentPage === "doctor" && <DoctorContainer />}
-          {currentPage === "client" && <ClientContainer />}
+          {currentPage === "info" && <DoctorInfoContainer />}
+          {currentPage === "visualization2" && <Visualization2 />}
+          {currentPage === "visualization3" && <Visualization3 />}
+          {currentPage === "visualization1" && <Visualization1 />}
+          {currentPage === "visualization4" && <Visualization4 />}
+          {currentPage === "visualization5" && <Visualization5 />}
+          {currentPage === "visualization6" && <Visualization6 />}
         </div>
       </div>
     </div>

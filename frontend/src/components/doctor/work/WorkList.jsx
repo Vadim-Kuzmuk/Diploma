@@ -1,5 +1,5 @@
 import React from "react";
-import DepartmentItem from "./DepartmentItem";
+import WorkItem from "./WorkItem";
 import { Grid, Typography } from "@mui/material";
 
 const containerStyle = {
@@ -14,8 +14,8 @@ const labelStyle = {
   fontWeight: "bold"
 };
 
-const DepartmentList = ({
-  departments,
+const WorkList = ({
+  works,
   editedData,
   setEditedData,
   sendPatchRequest,
@@ -28,29 +28,44 @@ const DepartmentList = ({
 
   return <>
     <Grid container style={containerStyle} spacing={2}>
-      <Grid item xs={3}>
+      <Grid item xs={1}>
         <Typography variant="body1" style={labelStyle}>
-          ID
+          Прізвище
+        </Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <Typography variant="body1" style={labelStyle}>
+          Ім'я
         </Typography>
       </Grid>
       <Grid item xs={2}>
         <Typography variant="body1" style={labelStyle}>
-          Назва
+          Назва проекту
         </Typography>
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={1}>
         <Typography variant="body1" style={labelStyle}>
-          Телефон
+          Години роботи
+        </Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <Typography variant="body1" style={labelStyle}>
+          Секунди
+        </Typography>
+      </Grid>
+      <Grid item xs={1}>
+        <Typography variant="body1" style={labelStyle}>
+          Дата запису
         </Typography>
       </Grid>
       <Grid item xs={5}>
       </Grid>
     </Grid>
     <div className="page-style">
-      {departments && departments.map((item, key) => (
+      {works && works.map((item, key) => (
         <div key={key}>
-          <DepartmentItem
-            department={item}
+          <WorkItem
+            work={item}
             sendPatchRequest={sendPatchRequest}
             sendDeleteRequest={sendDeleteRequest}
             editedData={editedData}
@@ -66,4 +81,4 @@ const DepartmentList = ({
   </>;
 };
 
-export default DepartmentList;
+export default WorkList;

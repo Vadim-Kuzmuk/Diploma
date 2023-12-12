@@ -16,8 +16,6 @@ const labelStyle = {
 
 const DoctorList = ({
   doctors,
-  rooms,
-  fetchRooms,
   setEditedData,
   editedData,
   notification,
@@ -33,7 +31,7 @@ const DoctorList = ({
       <Grid container style={containerStyle} spacing={2}>
         <Grid item xs={3}>
           <Typography variant="body1" style={labelStyle}>
-            ID Доктору
+            ID Працівника
           </Typography>
         </Grid>
         <Grid item xs={1}>
@@ -60,43 +58,11 @@ const DoctorList = ({
           <Typography></Typography>
         </Grid>
       </Grid>
-      <Grid container style={containerStyle} spacing={2}>
-        <Grid item xs={2}>
-          <Typography variant="body1" style={labelStyle}>
-            Ціна консультації
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          <Typography variant="body1" style={labelStyle}>
-            Ціна прийому
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          <Typography variant="body1" style={labelStyle}>
-            Тривалість
-          </Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <Typography variant="body1" style={labelStyle}>
-            Формати
-          </Typography>
-        </Grid>
-        <Grid item xs={1}>
-          <Typography variant="body1" style={labelStyle}>
-            Кабінет
-          </Typography>
-        </Grid>
-        <Grid item xs={5}>
-          <Typography></Typography>
-        </Grid>
-      </Grid>
       <div className="page-style">
         {doctors && doctors.map((item, key) => (
           <div key={key}>
             <DoctorItem
               doctor={item}
-              rooms={rooms}
-              fetchRooms={fetchRooms}
               setEditedData={setEditedData}
               editedData={editedData}
               sendPatchRequest={sendPatchRequest}

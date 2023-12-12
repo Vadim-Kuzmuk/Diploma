@@ -17,7 +17,6 @@ const DoctorContainer = () => {
   const [disable, setDisable] = useState(false);
 
   const [doctors, setDoctors] = useState(null);
-  const [rooms, setRooms] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [newDoctorData, setNewDoctorData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -49,16 +48,6 @@ const DoctorContainer = () => {
       }
     }).catch(error => {
       console.log("error");
-    });
-  };
-
-  const fetchRooms = () => {
-    axios.get("/api/rooms", userAuthenticationConfig()).then(response => {
-      if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
-        setRooms(response.data["hydra:member"]);
-      }
-    }).catch(error => {
-      console.log("error fetching rooms");
     });
   };
 
@@ -94,7 +83,7 @@ const DoctorContainer = () => {
         setNotification({
           visible: true,
           type: "error",
-          message: "Помилка при видаленні лікаря!"
+          message: "Помилка при видаленні працівника!"
         });
       }
     });
@@ -112,7 +101,7 @@ const DoctorContainer = () => {
   const [paginationInfo, setPaginationInfo] = useState({
     totalItems: null,
     totalPageCount: null,
-    itemsPerPage: 4
+    itemsPerPage: 5
   });
 
   useEffect(() => {
@@ -127,7 +116,7 @@ const DoctorContainer = () => {
     <>
       <Helmet>
         <title>
-          Лікарі
+          Працівники
         </title>
       </Helmet>
       <Notification
@@ -136,20 +125,18 @@ const DoctorContainer = () => {
       />
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
         <Typography variant="h4" component="h1" mb={1}>
-          Лікарі
+          Працівники
         </Typography>
         <Button
           variant="contained"
           to="/admin-panel/new-doctor"
           component={NavLink}
         >
-          Додати лікаря
+          Додати працівника
         </Button>
       </div>
       <DoctorList
         doctors={doctors}
-        rooms={rooms}
-        fetchRooms={fetchRooms}
         setEditedData={setEditedData}
         editedData={editedData}
         sendPatchRequest={sendPatchRequest}

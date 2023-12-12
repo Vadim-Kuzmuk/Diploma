@@ -20,7 +20,7 @@ const containerStyle = {
   justifyContent: "center",
   padding: "8px",
   width: "1630px",
-  height: "160px",
+  height: "80px",
   backgroundColor: "#e3e3e3",
   borderRadius: "10px",
   marginBottom: "30px"
@@ -28,8 +28,6 @@ const containerStyle = {
 
 const DoctorItem = ({
   doctor,
-  rooms,
-  fetchRooms,
   setEditedData,
   editedData,
   notification,
@@ -51,12 +49,6 @@ const DoctorItem = ({
 
   const updatedData = {
     ...editedData,
-    grades: doctor.grades,
-    consultationPrice: doctor.consultationPrice,
-    visitPrice: doctor.visitPrice,
-    duration: doctor.duration,
-    formats: doctor.formats,
-    room: doctor.room.id,
     user: userData
   };
 
@@ -92,27 +84,10 @@ const DoctorItem = ({
     setDisable(false);
   };
 
-  const handleCheckboxChange = (param) => (event) => {
-    const checked = event.currentTarget.checked;
-    setEditedData((prevData) => ({
-      ...prevData,
-      formats: {
-        ...prevData.formats,
-        [param]: checked
-      }
-    }));
-  };
-
   const validateData = (data) => {
     switch (false) {
       case isValidEmail(data.user.email):
         return "Некоректна адреса електронної пошти!";
-      case isGreaterThanZero(data.consultationPrice):
-        return "Некоректна ціна консультації!";
-      case isGreaterThanZero(data.visitPrice):
-        return "Некоректна ціна візиту!";
-      case isLessThanSixty(data.duration):
-        return "Мінімальна тривалість 10 хвилин і максимальна 60 хвилин!";
       case isNameValid(data.user.firstName):
         return "Мінімальна довжина імені - 3 символи!";
       case isNameValid(data.user.lastName):
@@ -127,21 +102,9 @@ const DoctorItem = ({
     return emailRegex.test(email);
   };
 
-  const isGreaterThanZero = (value) => {
-    return parseFloat(value) > 0;
-  };
-
-  const isLessThanSixty = (duration) => {
-    return duration >= 10 && duration <= 60;
-  };
-
   const isNameValid = (name) => {
     return name.trim().length >= 3;
   };
-
-  useEffect(() => {
-    fetchRooms();
-  }, []);
 
   return (
     <Grid container style={containerStyle} spacing={2}>
@@ -197,78 +160,6 @@ const DoctorItem = ({
               }
             />
           </Grid>
-          <Grid item xs={3}>
-            <Typography />
-          </Grid>
-          <Grid item xs={2}>
-            <TextField
-              type="text"
-              value={editedData.consultationPrice}
-              onChange={(e) =>
-                setEditedData({ ...editedData, consultationPrice: e.target.value })
-              }
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <TextField
-              type="text"
-              value={editedData.visitPrice}
-              onChange={(e) =>
-                setEditedData({ ...editedData, visitPrice: e.target.value })
-              }
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <TextField
-              type="number"
-              value={editedData.duration ?? ""}
-              onChange={(e) => {
-                const newDuration = parseInt(e.target.value);
-                if (!isNaN(newDuration)) {
-                  setEditedData({ ...editedData, duration: newDuration });
-                }
-              }}
-              InputProps={{ inputProps: { min: 10, max: 60 } }}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={editedData.formats.online}
-                  onChange={handleCheckboxChange("online")}
-                  name="online"
-                />
-              }
-              label="Online"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={editedData.formats.offline}
-                  onChange={handleCheckboxChange("offline")}
-                  name="offline"
-                />
-              }
-              label="Offline"
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <FormControl>
-              <Select
-                id="department-select"
-                label="Кабінет"
-                value={editedData.room || doctor.room.id}
-                onChange={(e) =>
-                  setEditedData({ ...editedData, room: e.target.value })
-                }
-              >
-                {rooms && rooms.map((room, key) => (
-                  <MenuItem key={room.id} value={room.id}>{room.number}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
         </>
       ) : (
         <>
@@ -283,26 +174,6 @@ const DoctorItem = ({
           </Grid>
           <Grid item xs={2}>
             <Typography>{doctor.user.email}</Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <Typography></Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography>{doctor.consultationPrice}</Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Typography>{doctor.visitPrice}</Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Typography>{doctor.duration}</Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography>
-              {doctor.formats.offline && "Прийоми"} {doctor.formats.offline && doctor.formats.online && "/"} {doctor.formats.online && "Консультації"}
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Typography>{doctor.room.number}</Typography>
           </Grid>
         </>
       )}
@@ -323,12 +194,9 @@ const DoctorItem = ({
               <DeleteOutlineOutlinedIcon />
             </Button>
           </Grid>
-          <Grid item xs={2}>
-            <Typography />
-          </Grid>
         </>
       ) : (
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <Button
             onClick={handleEditClick}
             variant="outlined"
@@ -338,9 +206,6 @@ const DoctorItem = ({
           </Button>
         </Grid>
       )}
-      <Grid item xs={3}>
-        <Typography />
-      </Grid>
     </Grid>
   );
 };
