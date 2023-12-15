@@ -6,6 +6,8 @@ import userAuthenticationConfig from "../../../utils/userAuthenticationConfig.js
 import { Typography, Grid } from "@mui/material";
 import Notification from "../../elements/notification/Notification";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { checkFilterItem, fetchFilterData } from "../../../utils/fetchFilterData";
 
 const WorkContainer = () => {
   const [projectData, setProjectData] = useState([]);
@@ -15,8 +17,21 @@ const WorkContainer = () => {
     message: ""
   });
 
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const [filterData, setFilterData] = useState({
+    "page": checkFilterItem(searchParams, "page", 1, true),
+    "title": checkFilterItem(searchParams, "title", null)
+  });
+
   useEffect(() => {
-    axios.get("/api/works", userAuthenticationConfig()).then(response => {
+
+    let filterUrl = fetchFilterData(filterData);
+
+    navigate(filterUrl);
+
+    axios.get("/api/works" + filterUrl + "&itemsPerPage=" + paginationInfo.itemsPerPage, userAuthenticationConfig()).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
         const projects = ["Project A", "Project B", "Project C", "Project D"];
 
@@ -49,11 +64,23 @@ const WorkContainer = () => {
         });
 
         setProjectData(projectData);
+
+        setPaginationInfo({
+          ...paginationInfo,
+          totalItems: response.data["hydra:totalItems"],
+          totalPageCount: Math.ceil(response.data["hydra:totalItems"] / paginationInfo.itemsPerPage)
+        });
       }
     }).catch(error => {
       console.log("error", error);
     });
   }, []);
+
+  const [paginationInfo, setPaginationInfo] = useState({
+    totalItems: null,
+    totalPageCount: null,
+    itemsPerPage: 500
+  });
 
   const COLORS = ["#8884d8", "#82ca9d", "#ff7f0e", "#2196f3"];
 

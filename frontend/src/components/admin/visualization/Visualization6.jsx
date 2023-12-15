@@ -6,6 +6,8 @@ import userAuthenticationConfig from "../../../utils/userAuthenticationConfig.js
 import { Typography, Grid } from "@mui/material";
 import Notification from "../../elements/notification/Notification";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
+import { checkFilterItem, fetchFilterData } from "../../../utils/fetchFilterData";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function formatHours(minutes) {
   const hours = Math.floor(minutes / 60);
@@ -21,8 +23,21 @@ const WorkContainer = () => {
     message: ""
   });
 
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const [filterData, setFilterData] = useState({
+    "page": checkFilterItem(searchParams, "page", 1, true),
+    "title": checkFilterItem(searchParams, "title", null)
+  });
+
   useEffect(() => {
-    axios.get("/api/works", userAuthenticationConfig()).then(response => {
+
+    let filterUrl = fetchFilterData(filterData);
+
+    navigate(filterUrl);
+
+    axios.get("/api/works" + filterUrl + "&itemsPerPage=" + paginationInfo.itemsPerPage, userAuthenticationConfig()).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
         const projects = ["Project A", "Project B", "Project C", "Project D"];
 
@@ -53,16 +68,16 @@ const WorkContainer = () => {
           let specifiedTotalSeconds;
           switch (project) {
             case "Project A":
-              specifiedTotalSeconds = 220;
+              specifiedTotalSeconds = 820;
               break;
             case "Project B":
-              specifiedTotalSeconds = 460;
+              specifiedTotalSeconds = 660;
               break;
             case "Project C":
               specifiedTotalSeconds = 525;
               break;
             case "Project D":
-              specifiedTotalSeconds = 180;
+              specifiedTotalSeconds = 720;
               break;
             default:
               specifiedTotalSeconds = 1000;
@@ -78,11 +93,23 @@ const WorkContainer = () => {
         });
 
         setProjectData(projectData);
+
+        setPaginationInfo({
+          ...paginationInfo,
+          totalItems: response.data["hydra:totalItems"],
+          totalPageCount: Math.ceil(response.data["hydra:totalItems"] / paginationInfo.itemsPerPage)
+        });
       }
     }).catch(error => {
       console.log("error", error);
     });
   }, []);
+
+  const [paginationInfo, setPaginationInfo] = useState({
+    totalItems: null,
+    totalPageCount: null,
+    itemsPerPage: 500
+  });
 
   const COLORS = ["#9f9f9f", "#47ce78"];
 
@@ -147,7 +174,7 @@ const WorkContainer = () => {
               <Typography variant="body1" color="textPrimary">
                 Загальна кількість годин витрачених на проект: {project.totalHours}.
                 <br />
-                Прогноз годин які ще потрібно витратити: {remainingHours[index]}.
+                Прогноз годин які ще потрібно витратити: {remainingHours[index]}
               </Typography>
             )}
           </Grid>

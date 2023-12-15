@@ -15,6 +15,8 @@ import {
   Tooltip,
   Legend
 } from "recharts";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { checkFilterItem, fetchFilterData } from "../../../utils/fetchFilterData";
 
 const WorkContainer = () => {
   const [works, setWorks] = useState([]);
@@ -24,8 +26,21 @@ const WorkContainer = () => {
     message: ""
   });
 
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const [filterData, setFilterData] = useState({
+    "page": checkFilterItem(searchParams, "page", 1, true),
+    "title": checkFilterItem(searchParams, "title", null)
+  });
+
   useEffect(() => {
-    axios.get("/api/works", userAuthenticationConfig()).then(response => {
+
+    let filterUrl = fetchFilterData(filterData);
+
+    navigate(filterUrl);
+
+    axios.get("/api/works" + filterUrl + "&itemsPerPage=" + paginationInfo.itemsPerPage, userAuthenticationConfig()).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
         const groupedWorks = _.groupBy(response.data["hydra:member"], "user.id");
         const aggregatedWorks = [];
@@ -43,11 +58,23 @@ const WorkContainer = () => {
         }
 
         setWorks(aggregatedWorks);
+
+        setPaginationInfo({
+          ...paginationInfo,
+          totalItems: response.data["hydra:totalItems"],
+          totalPageCount: Math.ceil(response.data["hydra:totalItems"] / paginationInfo.itemsPerPage)
+        });
       }
     }).catch(error => {
       console.log("error", error);
     });
   }, []);
+
+  const [paginationInfo, setPaginationInfo] = useState({
+    totalItems: null,
+    totalPageCount: null,
+    itemsPerPage: 500
+  });
 
   return (
     <>
